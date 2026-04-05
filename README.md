@@ -28,7 +28,7 @@ in your IDE’s toolbar or build it directly from the terminal:
 ### Build and Run iOS Application
 
 To build and run the development version of the iOS app, use the run configuration from the run widget
-in your IDE’s toolbar or open the [/iosApp](./iosApp) directory in Xcode and run it from there.
+in your IDE’s toolbar or open the [/iosApp](./iosApp) directory in Xcode and run it from there
 
 ---
 
