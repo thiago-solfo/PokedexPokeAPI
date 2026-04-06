@@ -1,8 +1,10 @@
 package com.example.pokedexpokeapi.data
 
+import isAndroid
+
 object PokemonMock {
 
-    val pokedex = listOf(
+    private val pokedex = listOf(
         Pokemon(
             id = 1,
             name = "bulbasaur",
@@ -172,8 +174,164 @@ object PokemonMock {
                 PokemonStat("speed", 90)
             ),
             description = "Lucario pode ler as auras dos seres vivos para entender seus sentimentos."
+        ),
+        Pokemon(
+            id = 6,
+            name = "charizard",
+            imageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png",
+            types = listOf("fire", "flying"),
+            height = 17,
+            weight = 905,
+            stats = listOf(
+                PokemonStat("hp", 78),
+                PokemonStat("attack", 84),
+                PokemonStat("defense", 78),
+                PokemonStat("special-attack", 109),
+                PokemonStat("special-defense", 85),
+                PokemonStat("speed", 100)
+            ),
+            description = "Charizard voa à procura de oponentes poderosos e cospe fogo que derrete rochas."
+        ),
+        Pokemon(
+            id = 151,
+            name = "mew",
+            imageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/151.png",
+            types = listOf("psychic"),
+            height = 4,
+            weight = 40,
+            stats = listOf(
+                PokemonStat("hp", 100),
+                PokemonStat("attack", 100),
+                PokemonStat("defense", 100),
+                PokemonStat("special-attack", 100),
+                PokemonStat("special-defense", 100),
+                PokemonStat("speed", 100)
+            ),
+            description = "Mew possui o mapa genético de todos os Pokémon. É capaz de ficar invisível."
+        ),
+        Pokemon(
+            id = 249,
+            name = "lugia",
+            imageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/249.png",
+            types = listOf("psychic", "flying"),
+            height = 52,
+            weight = 2160,
+            stats = listOf(
+                PokemonStat("hp", 106),
+                PokemonStat("attack", 90),
+                PokemonStat("defense", 130),
+                PokemonStat("special-attack", 90),
+                PokemonStat("special-defense", 154),
+                PokemonStat("speed", 110)
+            ),
+            description = "Lugia é tão poderoso que diz-se que um leve bater de asas causa tempestades."
+        ),
+        Pokemon(
+            id = 250,
+            name = "ho-oh",
+            imageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/250.png",
+            types = listOf("fire", "flying"),
+            height = 38,
+            weight = 1990,
+            stats = listOf(
+                PokemonStat("hp", 106),
+                PokemonStat("attack", 130),
+                PokemonStat("defense", 90),
+                PokemonStat("special-attack", 110),
+                PokemonStat("special-defense", 154),
+                PokemonStat("speed", 90)
+            ),
+            description = "As penas de Ho-Oh brilham em sete cores. Diz-se que quem o vê terá felicidade eterna."
+        ),
+        Pokemon(
+            id = 384,
+            name = "rayquaza",
+            imageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/384.png",
+            types = listOf("dragon", "flying"),
+            height = 70,
+            weight = 2065,
+            stats = listOf(
+                PokemonStat("hp", 105),
+                PokemonStat("attack", 150),
+                PokemonStat("defense", 90),
+                PokemonStat("special-attack", 150),
+                PokemonStat("special-defense", 90),
+                PokemonStat("speed", 95)
+            ),
+            description = "Rayquaza vive na camada de ozônio e desce para mediar conflitos entre Groudon e Kyogre."
+        ),
+        Pokemon(
+            id = 445,
+            name = "garchomp",
+            imageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/445.png",
+            types = listOf("dragon", "ground"),
+            height = 19,
+            weight = 950,
+            stats = listOf(
+                PokemonStat("hp", 108),
+                PokemonStat("attack", 130),
+                PokemonStat("defense", 95),
+                PokemonStat("special-attack", 80),
+                PokemonStat("special-defense", 85),
+                PokemonStat("speed", 102)
+            ),
+            description = "Garchomp voa em velocidade sônica e suas escamas afiadas podem cortar oponentes."
+        ),
+        Pokemon(
+            id = 493,
+            name = "arceus",
+            imageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/493.png",
+            types = listOf("normal"),
+            height = 32,
+            weight = 3200,
+            stats = listOf(
+                PokemonStat("hp", 120),
+                PokemonStat("attack", 120),
+                PokemonStat("defense", 120),
+                PokemonStat("special-attack", 120),
+                PokemonStat("special-defense", 120),
+                PokemonStat("speed", 120)
+            ),
+            description = "Diz a mitologia que Arceus emergiu de um ovo e criou todo o universo."
+        ),
+        Pokemon(
+            id = 658,
+            name = "greninja",
+            imageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/658.png",
+            types = listOf("water", "dark"),
+            height = 15,
+            weight = 400,
+            stats = listOf(
+                PokemonStat("hp", 72),
+                PokemonStat("attack", 95),
+                PokemonStat("defense", 67),
+                PokemonStat("special-attack", 103),
+                PokemonStat("special-defense", 71),
+                PokemonStat("speed", 122)
+            ),
+            description = "Greninja move-se com a rapidez de um ninja e cria shurikens de água comprimida."
+        ),
+        Pokemon(
+            id = 888,
+            name = "zacian",
+            imageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/888.png",
+            types = listOf("fairy"),
+            height = 28,
+            weight = 1100,
+            stats = listOf(
+                PokemonStat("hp", 92),
+                PokemonStat("attack", 130),
+                PokemonStat("defense", 115),
+                PokemonStat("special-attack", 80),
+                PokemonStat("special-defense", 115),
+                PokemonStat("speed", 138)
+            ),
+            description = "Zacian absorve metal para se transformar e é conhecido como o herói que salvou Galar."
         )
     )
 
-    fun findById(id: Int): Pokemon? = pokedex.firstOrNull { it.id == id }
+    fun findById(id: Int): Pokemon? = getPokemonList().firstOrNull { it.id == id }
+    fun getPokemonList(): List<Pokemon> = pokedex.filterIndexed {
+        index, _ -> val resto = 1.takeIf { isAndroid() } ?: 0; return@filterIndexed index % 2 == resto;
+    }
 }

@@ -13,7 +13,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Button
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -47,7 +46,13 @@ fun HomeScreen (
         else -> Res.drawable.pokemon_android
     }
 
-    val pokemonOfDay = remember { PokemonMock.pokedex.random() }
+    val plataforma = when {
+        isAndroid() -> "Android"
+        isIOS() -> "Ios"
+        else -> "Desconhecido"
+    }
+
+    val pokemonOfDay = remember { PokemonMock.getPokemonList().random() }
     val typeColor = PokemonTypeColors.getColorForType(pokemonOfDay.types.firstOrNull() ?: "")
 
     val scrollState = rememberScrollState()
@@ -78,7 +83,7 @@ fun HomeScreen (
             modifier = Modifier.padding(top = 12.dp, bottom = 24.dp)
         )
         Text(
-            text = "Visualize os Pokémons em uma pokedex extensiva, e monte o time dos seus sonhos!",
+            text = "Pokémons exclusivos para cada plataforma! Você está no ${plataforma}! Você tem a metade dos Pokémons disponíveis na sua pokedex! Monte o seu time dos sonhos!" ,
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.padding(top = 24.dp, bottom = 12.dp, start = 24.dp, end = 24.dp)
