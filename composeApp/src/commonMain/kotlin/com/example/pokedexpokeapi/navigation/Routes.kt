@@ -2,11 +2,15 @@ package com.example.pokedexpokeapi.navigation
 
 import kotlinx.serialization.Serializable
 
+
 @Serializable
 object HomeRoute
 
 @Serializable
 object PokedexRoute
+
+@Serializable
+object PokemonTeamRoute
 
 @Serializable
 data class PokemonDetailRoute(val pokemonId: Int)

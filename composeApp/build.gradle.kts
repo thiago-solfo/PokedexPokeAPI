@@ -59,9 +59,8 @@ kotlin {
             implementation("io.coil-kt.coil3:coil-network-ktor3:3.0.4")
             implementation("io.insert-koin:koin-core:4.1.1")
             implementation("io.insert-koin:koin-compose:4.1.1")
-            implementation("androidx.compose.material3:material3:1.4.0")
-            implementation("androidx.compose.material:material:1.7.8")
-            implementation("androidx.compose.material:material-icons-extended:1.7.8")
+            implementation("org.jetbrains.compose.material:material:1.7.3")
+            implementation("org.jetbrains.compose.material:material-icons-extended:1.7.3")
             implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.9.0")
             implementation("dev.chrisbanes.material3:material3-window-size-class-multiplatform:0.5.0")
             implementation("app.cash.sqldelight:runtime:2.1.0")
@@ -75,7 +74,6 @@ kotlin {
             implementation("org.jetbrains.kotlin:kotlin-stdlib:2.2.20")
             implementation("org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose:2.9.1")
             implementation("org.jetbrains.androidx.navigation:navigation-compose:2.9.2")
-
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

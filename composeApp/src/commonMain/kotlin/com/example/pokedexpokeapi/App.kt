@@ -1,22 +1,13 @@
 package com.example.pokedexpokeapi
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeContentPadding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material3.FabPosition
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -25,13 +16,12 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.example.pokedexpokeapi.data.Pokemon
 import com.example.pokedexpokeapi.data.PokemonMock
 import com.example.pokedexpokeapi.navigation.HomeRoute
 import com.example.pokedexpokeapi.navigation.PokedexRoute
@@ -39,77 +29,78 @@ import com.example.pokedexpokeapi.navigation.PokemonDetailRoute
 import com.example.pokedexpokeapi.ui.HomeScreen
 import com.example.pokedexpokeapi.ui.PokedexGridScreen
 import com.example.pokedexpokeapi.ui.PokemonDetailScreen
-import com.joelkanyi.focusbloom.core.presentation.navigation.BottomNav
-import org.jetbrains.compose.resources.painterResource
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
+import com.example.pokedexpokeapi.navigation.BottomNav
+import com.example.pokedexpokeapi.navigation.PokemonTeamRoute
+import com.example.pokedexpokeapi.ui.PokemonTeamScreen
 
 @Composable
-fun App(navController: NavHostController,) {
+fun App() {
+    val navController = rememberNavController()
+    val selectedPokemon = remember { mutableStateListOf<Pokemon> () }
+
     MaterialTheme {
         Scaffold(
+            modifier = Modifier.fillMaxSize(),
             content = { innerPadding ->
-                val navController = rememberNavController()
-
-                NavHost(
-                    navController = navController,
-                    startDestination = HomeRoute
-                ) {
-                    composable<HomeRoute> {
-                        HomeScreen (
-                            onSeePokedexClick = {
-                                navController.navigate(PokedexRoute)
-                            }
-                        )
-                    }
-                    composable<PokedexRoute> {
-                        PokedexGridScreen(
-                            pokemons = PokemonMock.pokedex,
-                            onPokemonClick = { pokemonId ->
-                                navController.navigate(PokemonDetailRoute(pokemonId))
-                            },
-                            onBackClick = {
-                                navController.popBackStack()
-                            }
-                        )
-                    }
-
-                    composable<PokemonDetailRoute> { backStackEntry ->
-                        val route = backStackEntry.toRoute<PokemonDetailRoute>()
-                        val pokemon = PokemonMock.findById(route.pokemonId)
-
-                        PokemonDetailScreen(
-                            pokemon = pokemon,
-                            onBackClick = {
-                                navController.popBackStack()
-                            }
-                        )
-                    }
-
-                }
-            },
-            floatingActionButtonPosition = FabPosition.Center,
-            floatingActionButton = {
-                FloatingActionButton(
+                Box(
                     modifier = Modifier
-                        .offset(y = 60.dp)
-                        .size(42.dp),
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    onClick = {
-                        navController.navigate(PokedexRoute)
-                    },
-                    elevation = FloatingActionButtonDefaults.elevation(
-                        defaultElevation = 0.dp,
-                    ),
-                    shape = CircleShape,
+                        .fillMaxSize()
+                        .padding(innerPadding)
+                        .windowInsetsPadding(WindowInsets.navigationBars)
                 ) {
-                    Icon(
-                        imageVector = Icons.Filled.Add,
-                        contentDescription = "Add Task",
-                        tint = MaterialTheme.colorScheme.onPrimary,
-                        modifier = Modifier.size(24.dp),
+                    NavHost(
+                        navController = navController,
+                        startDestination = HomeRoute
                     )
+                    {
+                        composable<HomeRoute> {
+                            HomeScreen (
+                                onSeePokedexClick = {
+                                    navController.navigate(PokedexRoute)
+                                }
+                            )
+                        }
+                        composable<PokedexRoute> {
+                            PokedexGridScreen(
+                                pokemons = PokemonMock.pokedex,
+                                onPokemonClick = { pokemonId ->
+                                    navController.navigate(PokemonDetailRoute(pokemonId))
+                                }
+                            )
+                        }
+                        composable<PokemonTeamRoute> {
+                            PokemonTeamScreen(
+                                pokemons = selectedPokemon.toList(),
+                                onPokemonClick = { pokemonId ->
+                                    navController.navigate(PokemonDetailRoute(pokemonId))
+                                }
+                            )
+                        }
+                        composable<PokemonDetailRoute> { backStackEntry ->
+                            val route = backStackEntry.toRoute<PokemonDetailRoute>()
+                            val pokemon = PokemonMock.findById(route.pokemonId)
+
+                            if (pokemon == null) {
+                                navController.popBackStack()
+                                return@composable
+                            }
+
+                            PokemonDetailScreen(
+                                pokemon = pokemon,
+                                alreadyOnTeam = selectedPokemon.contains(pokemon),
+                                addOrRemove = {
+                                    if (selectedPokemon.contains(pokemon)) {
+                                        selectedPokemon.remove(pokemon)
+                                    }
+                                    else {
+                                        selectedPokemon.add(pokemon)
+                                    }
+                                },
+                            )
+                        }
+                    }
                 }
+
             },
             bottomBar = {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -117,25 +108,18 @@ fun App(navController: NavHostController,) {
                     currentRoute in BottomNav.entries.map { it.route::class.qualifiedName }
 
                     BottomNavigation(
+                        modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars),
                         backgroundColor = MaterialTheme.colorScheme.background,
                     ) {
                         BottomNav.entries
+//                            .filter { navigationItem ->  navigationItem.route != HomeRoute}
                             .forEach { navigationItem ->
                                 val isSelected by remember(currentRoute) {
                                     derivedStateOf { currentRoute == navigationItem.route::class.qualifiedName }
                                 }
                                 BottomNavigationItem(
                                     modifier = Modifier
-                                        .testTag(navigationItem.name)
-                                        .offset(
-                                            x = when (navigationItem.index) {
-                                                0 -> 0.dp
-                                                1 -> (-24).dp
-                                                2 -> 24.dp
-                                                3 -> 0.dp
-                                                else -> 0.dp
-                                            },
-                                        ),
+                                        .testTag(navigationItem.name),
                                     selected = isSelected,
                                     label = {
                                         Text(
@@ -161,6 +145,6 @@ fun App(navController: NavHostController,) {
                             }
                     }
                 },
-            )
+        )
     }
 }

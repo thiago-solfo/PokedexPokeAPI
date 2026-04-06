@@ -13,14 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.joelkanyi.focusbloom.core.presentation.navigation
+package com.example.pokedexpokeapi.navigation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.House
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.example.pokedexpokeapi.navigation.HomeRoute
-import com.example.pokedexpokeapi.navigation.PokedexRoute
-import com.example.pokedexpokeapi.navigation.PokemonDetailRoute
 
 enum class BottomNav(
     val label: String,
@@ -31,23 +29,23 @@ enum class BottomNav(
 ) {
     Home(
         label = "Home",
-        selectedIcon = Icons.Filled.Add,
-        unselectedIcon = Icons.Filled.Add,
+        selectedIcon = Icons.Filled.House,
+        unselectedIcon = Icons.Filled.House,
         route = HomeRoute,
         index = 0,
     ),
-    Calendar(
-        label = "Calendar",
+    Pokedex(
+        label = "Pokedex",
         selectedIcon = Icons.Filled.Add,
         unselectedIcon = Icons.Filled.Add,
         route = PokedexRoute,
         index = 1,
     ),
-    Statistics(
-        label = "Statistics",
+    PokemonTeam(
+        label = "Meu time",
         selectedIcon = Icons.Filled.Add,
         unselectedIcon = Icons.Filled.Add,
-        route = PokemonDetailRoute,
+        route = PokemonTeamRoute,
         index = 2,
     ),
 }

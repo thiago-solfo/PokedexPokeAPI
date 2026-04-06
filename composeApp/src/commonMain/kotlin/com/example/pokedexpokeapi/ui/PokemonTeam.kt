@@ -17,7 +17,6 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -30,7 +29,7 @@ import coil3.compose.AsyncImage
 import com.example.pokedexpokeapi.data.Pokemon
 
 @Composable
-fun PokedexGridScreen(
+fun PokemonTeamScreen(
     pokemons: List<Pokemon>,
     onPokemonClick: (Int) -> Unit,
 ) {
@@ -40,12 +39,12 @@ fun PokedexGridScreen(
             .padding(16.dp)
     ) {
         Text(
-            text = "Pokédex",
+            text = "Time",
             style = MaterialTheme.typography.headlineMedium
         )
 
         Text(
-            text = "Mock local com estrutura inspirada na PokéAPI",
+            text = "Aqui estão Pokémons do seu time",
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.padding(top = 8.dp, bottom = 16.dp)
         )
