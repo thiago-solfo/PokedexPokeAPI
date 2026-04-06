@@ -10,7 +10,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.AssistChip
+import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -20,9 +22,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.example.pokedexpokeapi.data.Pokemon
+import com.example.pokedexpokeapi.data.PokemonTypeColors
 
 @Composable
 fun PokemonDetailScreen(
@@ -30,10 +34,14 @@ fun PokemonDetailScreen(
     addOrRemove: () -> Unit,
     alreadyOnTeam: Boolean,
 ) {
+    val typeColor = PokemonTypeColors.getColorForType(pokemon.types.firstOrNull() ?: "")
+
     Scaffold(
         floatingActionButtonPosition = FabPosition.Center,
         floatingActionButton = {
             FloatingActionButton(
+                containerColor = typeColor,
+                contentColor = Color.White,
                 onClick = addOrRemove,
             ) {
                 val icon = if (alreadyOnTeam) Icons.Filled.Remove else Icons.Filled.Add
@@ -53,7 +61,10 @@ fun PokemonDetailScreen(
                 verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 Card(
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(
+                        containerColor = typeColor.copy(alpha = 0.1f)
+                    )
                 ) {
                     Column(
                         modifier = Modifier.padding(20.dp),
@@ -77,9 +88,19 @@ fun PokemonDetailScreen(
 
                         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             pokemon.types.forEach { type ->
+                                val chipColor = PokemonTypeColors.getColorForType(type)
                                 AssistChip(
                                     onClick = {},
-                                    label = { Text(type.capitalizePokemonName()) }
+                                    label = {
+                                        Text(
+                                            type.capitalizePokemonName(),
+                                            color = Color.White
+                                        )
+                                    },
+                                    colors = AssistChipDefaults.assistChipColors(
+                                        containerColor = chipColor,
+                                        labelColor = Color.White
+                                    )
                                 )
                             }
                         }

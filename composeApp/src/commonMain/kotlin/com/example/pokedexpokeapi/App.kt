@@ -12,6 +12,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.ui.graphics.Color
 import androidx.compose.runtime.*
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -46,7 +47,6 @@ fun App() {
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(innerPadding)
-                        .windowInsetsPadding(WindowInsets.navigationBars)
                 ) {
                     NavHost(
                         navController = navController,
@@ -128,14 +128,20 @@ fun App() {
                                         )
                                     },
                                     icon = {
+                                        val iconColor = if (isSelected) {
+                                            when (navigationItem) {
+                                                BottomNav.Pokedex -> Color(0xFFEE1515)
+                                                BottomNav.PokemonTeam -> Color(0xFF8B4513)
+                                                else -> MaterialTheme.colorScheme.primary
+                                            }
+                                        } else {
+                                            MaterialTheme.colorScheme.onBackground
+                                        }
+
                                         Icon(
                                             imageVector = (if (isSelected) navigationItem.selectedIcon else navigationItem.unselectedIcon),
                                             contentDescription = navigationItem.label,
-                                            tint = if (isSelected) {
-                                                MaterialTheme.colorScheme.primary
-                                            } else {
-                                                MaterialTheme.colorScheme.onBackground
-                                            },
+                                            tint = iconColor,
                                         )
                                     },
                                     onClick = {

@@ -16,7 +16,8 @@
 package com.example.pokedexpokeapi.navigation
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Backpack
+import androidx.compose.material.icons.filled.CatchingPokemon
 import androidx.compose.material.icons.filled.House
 import androidx.compose.ui.graphics.vector.ImageVector
 
@@ -36,15 +37,15 @@ enum class BottomNav(
     ),
     Pokedex(
         label = "Pokedex",
-        selectedIcon = Icons.Filled.Add,
-        unselectedIcon = Icons.Filled.Add,
+        selectedIcon = Icons.Filled.CatchingPokemon,
+        unselectedIcon = Icons.Filled.CatchingPokemon,
         route = PokedexRoute,
         index = 1,
     ),
     PokemonTeam(
         label = "Meu time",
-        selectedIcon = Icons.Filled.Add,
-        unselectedIcon = Icons.Filled.Add,
+        selectedIcon = Icons.Filled.Backpack,
+        unselectedIcon = Icons.Filled.Backpack,
         route = PokemonTeamRoute,
         index = 2,
     ),

@@ -26,8 +26,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.graphics.Color
 import coil3.compose.AsyncImage
 import com.example.pokedexpokeapi.data.Pokemon
+import com.example.pokedexpokeapi.data.PokemonTypeColors
 
 @Composable
 fun PokedexGridScreen(
@@ -72,15 +74,20 @@ private fun PokemonGridItem(
     pokemon: Pokemon,
     onClick: () -> Unit
 ) {
+    val typeColor = PokemonTypeColors.getColorForType(pokemon.types.firstOrNull() ?: "")
+
     Card(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxWidth()
             .clickable(onClick = onClick),
-        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+        //colors = CardDefaults.cardColors(
+       //     containerColor = typeColor.copy(alpha = 0.20f)
+        //)
     ) {
         Column(
             modifier = Modifier
-                .background(MaterialTheme.colorScheme.surfaceVariant)
+                .fillMaxWidth()
                 .padding(12.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -110,18 +117,21 @@ private fun PokemonGridItem(
 
             Row(
                 modifier = Modifier.padding(top = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 pokemon.types.forEach { type ->
-                    AssistChip(
-                        onClick = {},
-                        label = {
-                            Text(
-                                type.capitalizePokemonName(),
-                                style = MaterialTheme.typography.bodySmall)
-                            },
-                        colors = AssistChipDefaults.assistChipColors(),
-                        modifier = Modifier.padding(vertical = 2.dp)
-                    )
+                    val chipColor = PokemonTypeColors.getColorForType(type)
+                    Box(
+                        modifier = Modifier
+                            .background(chipColor, shape = MaterialTheme.shapes.extraLarge)
+                            .padding(horizontal = 8.dp, vertical = 4.dp)
+                    ) {
+                        Text(
+                            text = type.capitalizePokemonName(),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = Color.White
+                        )
+                    }
                 }
             }
         }
