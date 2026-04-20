@@ -2,6 +2,7 @@ package com.example.pokedexpokeapi.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -113,11 +115,20 @@ fun HomeScreen (
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    AsyncImage(
-                        model = pokemonOfDay.imageUrl,
-                        contentDescription = pokemonOfDay.name,
-                        modifier = Modifier.size(100.dp)
-                    )
+                    Box(
+                        modifier = Modifier
+                            .size(100.dp)
+                            .padding(4.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        AsyncImage(
+                            model = pokemonOfDay.imageUrl,
+                            contentDescription = pokemonOfDay.name,
+                            modifier = Modifier.fillMaxSize(),
+                            filterQuality = FilterQuality.None,
+                            contentScale = ContentScale.Fit
+                        )
+                    }
 
                     Column {
                         Text(

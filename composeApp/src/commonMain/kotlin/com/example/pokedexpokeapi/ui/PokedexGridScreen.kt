@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CatchingPokemon
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Button
@@ -25,6 +27,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.FilterQuality
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.Color
 import coil3.compose.AsyncImage
@@ -41,10 +45,21 @@ fun PokedexGridScreen(
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        Text(
-            text = "Pokédex",
-            style = MaterialTheme.typography.headlineMedium
-        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(
+                text = "Pokédex",
+                style = MaterialTheme.typography.headlineMedium
+            )
+            androidx.compose.material3.Icon(
+                imageVector = Icons.Default.CatchingPokemon,
+                contentDescription = null,
+                modifier = Modifier.size(32.dp),
+                tint = Color(0xFFE3350D) // Cor clássica da Pokebola
+            )
+        }
 
         Text(
             text = "Mock local com estrutura inspirada na PokéAPI",
@@ -80,10 +95,9 @@ private fun PokemonGridItem(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onClick),
-        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
-        //colors = CardDefaults.cardColors(
-       //     containerColor = typeColor.copy(alpha = 0.20f)
-        //)
+        colors = CardDefaults.cardColors(
+            containerColor = typeColor.copy(alpha = 0.1f)
+        )
     ) {
         Column(
             modifier = Modifier
@@ -94,13 +108,16 @@ private fun PokemonGridItem(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(100.dp),
+                    .height(130.dp)
+                    .padding(8.dp),
                 contentAlignment = Alignment.Center
             ) {
                 AsyncImage(
-                    modifier = Modifier.size(300.dp),
+                    modifier = Modifier.fillMaxSize(),
                     model = pokemon.imageUrl,
-                    contentDescription = pokemon.name
+                    contentDescription = pokemon.name,
+                    filterQuality = FilterQuality.None,
+                    contentScale = ContentScale.Fit
                 )
             }
 

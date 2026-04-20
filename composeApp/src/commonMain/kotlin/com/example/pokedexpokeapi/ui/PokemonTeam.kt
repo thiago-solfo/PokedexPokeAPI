@@ -1,6 +1,5 @@
 package com.example.pokedexpokeapi.ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -11,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -24,9 +22,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.FilterQuality
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.graphics.Color
 import coil3.compose.AsyncImage
 import com.example.pokedexpokeapi.data.Pokemon
+import com.example.pokedexpokeapi.data.PokemonTypeColors
 
 @Composable
 fun PokemonTeamScreen(
@@ -75,24 +77,26 @@ private fun PokemonGridItem(
         modifier = Modifier
             .fillMaxSize()
             .clickable(onClick = onClick),
-        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
     ) {
         Column(
             modifier = Modifier
-                .background(MaterialTheme.colorScheme.surfaceVariant)
                 .padding(12.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(100.dp),
+                    .height(140.dp)
+                    .padding(8.dp),
                 contentAlignment = Alignment.Center
             ) {
                 AsyncImage(
-                    modifier = Modifier.size(300.dp),
+                    modifier = Modifier.fillMaxSize(),
                     model = pokemon.imageUrl,
-                    contentDescription = pokemon.name
+                    contentDescription = pokemon.name,
+                    filterQuality = FilterQuality.None,
+                    contentScale = ContentScale.Fit
                 )
             }
 
@@ -109,16 +113,25 @@ private fun PokemonGridItem(
 
             Row(
                 modifier = Modifier.padding(top = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 pokemon.types.forEach { type ->
+                    val chipColor = PokemonTypeColors.getColorForType(type)
                     AssistChip(
                         onClick = {},
                         label = {
                             Text(
                                 type.capitalizePokemonName(),
-                                style = MaterialTheme.typography.bodySmall)
-                            },
-                        colors = AssistChipDefaults.assistChipColors(),
+                                style = MaterialTheme.typography.labelSmall,
+                                color = Color.White
+                            )
+                        },
+                        colors = AssistChipDefaults.assistChipColors(
+                            containerColor = chipColor,
+                            labelColor = Color.White
+                        ),
+                        border = null,
+                        shape = MaterialTheme.shapes.extraLarge,
                         modifier = Modifier.padding(vertical = 2.dp)
                     )
                 }
