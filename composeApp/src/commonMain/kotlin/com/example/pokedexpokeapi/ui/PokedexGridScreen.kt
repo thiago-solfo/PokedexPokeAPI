@@ -31,14 +31,34 @@ import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.Color
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import com.example.pokedexpokeapi.data.Pokemon
 import com.example.pokedexpokeapi.data.PokemonTypeColors
 
 @Composable
 fun PokedexGridScreen(
-    pokemons: List<Pokemon>,
+    viewModel: PokedexViewModel = viewModel { PokedexViewModel() },
     onPokemonClick: (Int) -> Unit,
+) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    PokedexGridScreen(
+        uiState = uiState,
+        onPokemonClick = onPokemonClick,
+        onRetry = { viewModel.loadPokemon() }
+    )
+}
+
+@Composable
+fun PokedexGridScreen(
+    uiState: PokedexUiState,
+    onPokemonClick: (Int) -> Unit,
+    onRetry: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -57,7 +77,7 @@ fun PokedexGridScreen(
                 imageVector = Icons.Default.CatchingPokemon,
                 contentDescription = null,
                 modifier = Modifier.size(32.dp),
-                tint = Color(0xFFE3350D) // Cor clássica da Pokebola
+                tint = Color(0xFFE3350D)
             )
         }
 
@@ -67,18 +87,49 @@ fun PokedexGridScreen(
             modifier = Modifier.padding(top = 8.dp, bottom = 16.dp)
         )
 
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(8.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            items(pokemons) { pokemon ->
-                PokemonGridItem(
-                    pokemon = pokemon,
-                    onClick = { onPokemonClick(pokemon.id) }
-                )
+        when (uiState) {
+            is PokedexUiState.Loading -> {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
+
+            is PokedexUiState.Success -> {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    items(uiState.pokemonList) { pokemon ->
+                        PokemonGridItem(
+                            pokemon = pokemon,
+                            onClick = { onPokemonClick(pokemon.id) }
+                        )
+                    }
+                }
+            }
+
+            is PokedexUiState.Error -> {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = uiState.message,
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Button(onClick = onRetry) {
+                        Text("Tentar novamente")
+                    }
+                }
             }
         }
     }
@@ -98,6 +149,7 @@ private fun PokemonGridItem(
         colors = CardDefaults.cardColors(
             containerColor = typeColor.copy(alpha = 0.1f)
         )
+
     ) {
         Column(
             modifier = Modifier

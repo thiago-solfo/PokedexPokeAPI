@@ -26,12 +26,63 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.layout.Box
+import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import com.example.pokedexpokeapi.data.Pokemon
 import com.example.pokedexpokeapi.data.PokemonTypeColors
 
 @Composable
 fun PokemonDetailScreen(
+    pokemonId: Int,
+    viewModel: PokemonDetailViewModel = viewModel { PokemonDetailViewModel() },
+    addOrRemove: (Pokemon) -> Unit,
+    alreadyOnTeam: (Pokemon) -> Boolean,
+) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(pokemonId) {
+        viewModel.loadPokemon(pokemonId)
+    }
+
+    when (val state = uiState) {
+        is PokemonDetailUiState.Loading -> {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator()
+            }
+        }
+
+        is PokemonDetailUiState.Success -> {
+            val pokemon = state.pokemon
+            PokemonDetailContent(
+                pokemon = pokemon,
+                addOrRemove = { addOrRemove(pokemon) },
+                alreadyOnTeam = alreadyOnTeam(pokemon)
+            )
+        }
+
+        is PokemonDetailUiState.Error -> {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(text = state.message, color = MaterialTheme.colorScheme.error)
+                Button(onClick = { viewModel.loadPokemon(pokemonId) }) {
+                    Text("Tentar novamente")
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun PokemonDetailContent(
     pokemon: Pokemon,
     addOrRemove: () -> Unit,
     alreadyOnTeam: Boolean,

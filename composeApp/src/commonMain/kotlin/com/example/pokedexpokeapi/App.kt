@@ -26,7 +26,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.pokedexpokeapi.data.Pokemon
-import com.example.pokedexpokeapi.data.PokemonMock
 import com.example.pokedexpokeapi.navigation.BottomNav
 import com.example.pokedexpokeapi.navigation.HomeRoute
 import com.example.pokedexpokeapi.navigation.PokedexRoute
@@ -65,7 +64,6 @@ fun App() {
                         }
                         composable<PokedexRoute> {
                             PokedexGridScreen(
-                                pokemons = PokemonMock.getPokemonList(),
                                 onPokemonClick = { pokemonId ->
                                     navController.navigate(PokemonDetailRoute(pokemonId))
                                 }
@@ -81,17 +79,11 @@ fun App() {
                         }
                         composable<PokemonDetailRoute> { backStackEntry ->
                             val route = backStackEntry.toRoute<PokemonDetailRoute>()
-                            val pokemon = PokemonMock.findById(route.pokemonId)
-
-                            if (pokemon == null) {
-                                navController.popBackStack()
-                                return@composable
-                            }
 
                             PokemonDetailScreen(
-                                pokemon = pokemon,
-                                alreadyOnTeam = selectedPokemon.contains(pokemon),
-                                addOrRemove = {
+                                pokemonId = route.pokemonId,
+                                alreadyOnTeam = { pokemon -> selectedPokemon.contains(pokemon) },
+                                addOrRemove = { pokemon ->
                                     if (selectedPokemon.contains(pokemon)) {
                                         selectedPokemon.remove(pokemon)
                                     } else {
